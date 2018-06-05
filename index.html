@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<span style="display: none;">
+  		<?php
+include "../../lanewechat.php";
+// $aa = $_GET['user_id']?$_GET['user_id']:'oKRYgv_I91FSUOX8kYOhP05AXQ_0';
+if($_GET['user_id']){
+  $redirect_uri = 'LaneWeChat2/kuailededan/dist/index.php#/friend_id/'.$_GET['user_id'];
+}else{
+  $redirect_uri = 'LaneWeChat2/kuailededan/dist/index.php';
+}
+
+\LaneWeChat\Core\WeChatOAuth::getCode($redirect_uri, $b, $scope = 'snsapi_userinfo');
+$code = $_GET['code'];
+
+$a = \LaneWeChat\Core\WeChatOAuth::getAccessTokenAndOpenId($code);
+$user_info = \LaneWeChat\Core\WeChatOAuth::getUserInfo($a['access_token'], $a['openid'], $lang = 'zh_CN');
+echo "<script type=>
+   window.localStorage.setItem('user_id'," . "'" . $user_info['openid'] . "'" . ");
+   window.localStorage.setItem('nickname'," . "'" . $user_info['nickname'] . "'" . ");
+   window.localStorage.setItem('headimgurl'," . "'" . $user_info['headimgurl'] . "'" . ");
+   //alert(window.localStorage.getItem('user_id'));
+   </script>";
+?>
+  	</span>
+		<meta charset="utf-8">
+		<title>助力世界杯</title>
+		<meta name="author" content="jqq">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<meta http-equiv="Expires" content="-1">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Pragma" content="no-cache">
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<!-- <script src="/static/js/jweixin-1.0.0.js" ></script>-->
+	</head>
+
+	<body>
+		<div id="app"></div>
+		<!-- built files will be auto injected -->
+	</body>
+	<!--<style>-->
+		<!--* {-->
+			<!--box-sizing: border-box;-->
+		<!--}-->
+
+		<!--a,-->
+		<!--abbr,-->
+		<!--acronym,-->
+		<!--address,-->
+		<!--applet,-->
+		<!--article,-->
+		<!--aside,-->
+		<!--audio,-->
+		<!--b,-->
+		<!--big,-->
+		<!--blockquote,-->
+		<!--body,-->
+		<!--canvas,-->
+		<!--caption,-->
+		<!--center,-->
+		<!--cite,-->
+		<!--code,-->
+		<!--dd,-->
+		<!--del,-->
+		<!--details,-->
+		<!--dfn,-->
+		<!--div,-->
+		<!--dl,-->
+		<!--dt,-->
+		<!--em,-->
+		<!--embed,-->
+		<!--fieldset,-->
+		<!--figcaption,-->
+		<!--figure,-->
+		<!--footer,-->
+		<!--form,-->
+		<!--h1,-->
+		<!--h2,-->
+		<!--h3,-->
+		<!--h4,-->
+		<!--h5,-->
+		<!--h6,-->
+		<!--header,-->
+		<!--hgroup,-->
+		<!--html,-->
+		<!--i,-->
+		<!--iframe,-->
+		<!--img,-->
+		<!--ins,-->
+		<!--kbd,-->
+		<!--label,-->
+		<!--legend,-->
+		<!--li,-->
+		<!--mark,-->
+		<!--menu,-->
+		<!--nav,-->
+		<!--object,-->
+		<!--ol,-->
+		<!--output,-->
+		<!--p,-->
+		<!--pre,-->
+		<!--q,-->
+		<!--ruby,-->
+		<!--s,-->
+		<!--samp,-->
+		<!--section,-->
+		<!--small,-->
+		<!--span,-->
+		<!--strike,-->
+		<!--strong,-->
+		<!--sub,-->
+		<!--summary,-->
+		<!--sup,-->
+		<!--table,-->
+		<!--tbody,-->
+		<!--td,-->
+		<!--tfoot,-->
+		<!--th,-->
+		<!--thead,-->
+		<!--time,-->
+		<!--tr,-->
+		<!--tt,-->
+		<!--u,-->
+		<!--ul,-->
+		<!--var,-->
+		<!--video {-->
+			<!--margin: 0;-->
+			<!--padding: 0;-->
+			<!--border: 0;-->
+			<!--vertical-align: baseline;-->
+			<!--font: inherit;-->
+			<!--font-size: 100%;-->
+		<!--}-->
+
+		<!--article,-->
+		<!--aside,-->
+		<!--details,-->
+		<!--figcaption,-->
+		<!--figure,-->
+		<!--footer,-->
+		<!--header,-->
+		<!--hgroup,-->
+		<!--menu,-->
+		<!--nav,-->
+		<!--section {-->
+			<!--display: block;-->
+		<!--}-->
+
+		<!--body,-->
+		<!--html {-->
+			<!--margin: 0 auto;-->
+			<!--height: 100%;-->
+			<!--max-width: 640px;-->
+			<!--min-width: 300px;-->
+		<!--}-->
+
+		<!--body {-->
+			<!--font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;-->
+			<!--line-height: 1;-->
+		<!--}-->
+
+		<!--ol,-->
+		<!--ul {-->
+			<!--list-style: none;-->
+		<!--}-->
+
+		<!--blockquote,-->
+		<!--q {-->
+			<!--quotes: none;-->
+		<!--}-->
+
+		<!--blockquote:after,-->
+		<!--blockquote:before,-->
+		<!--q:after,-->
+		<!--q:before {-->
+			<!--content: '';-->
+			<!--content: none;-->
+		<!--}-->
+
+		<!--table {-->
+			<!--border-collapse: collapse;-->
+			<!--border-spacing: 0;-->
+		<!--}-->
+
+		<!--a {-->
+			<!--text-decoration: none;-->
+		<!--}-->
+
+		<!--img {-->
+			<!--vertical-align: middle;-->
+		<!--}-->
+
+		<!--.clear1 {-->
+			<!--clear: both;-->
+			<!--height: 1px;-->
+		<!--}-->
+
+		<!--.clear10 {-->
+			<!--clear: both;-->
+			<!--height: 10px;-->
+		<!--}-->
+
+		<!--.fl {-->
+			<!--float: left;-->
+		<!--}-->
+
+		<!--.fr {-->
+			<!--float: right;-->
+		<!--}-->
+
+		<!--.text-center {-->
+			<!--text-align: center;-->
+		<!--}-->
+
+		<!--.clearfix:after,-->
+		<!--.clearfix:before {-->
+			<!--display: table;-->
+			<!--content: "";-->
+		<!--}-->
+
+		<!--.clearfix:after {-->
+			<!--clear: both;-->
+		<!--}-->
+	<!--</style>-->
+
+</html>

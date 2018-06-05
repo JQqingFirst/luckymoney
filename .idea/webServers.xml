@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="c6b12573-7a43-4b7f-ae5d-711ebd63b513" name="jiangqingqing" url="http://123.56.134.123">
+        <fileTransfer host="123.56.134.123" port="6622" rootFolder="/home/jiangqingqing/devspace/le_app" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="6622" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
