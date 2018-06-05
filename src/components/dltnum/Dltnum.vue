@@ -16,13 +16,13 @@
         <p class="pastwin lay-p clearfix"><span class="fl">第{{issue}}期&nbsp;截止时间{{etime}}</span><span class="fr" @click="toggle()">历史开奖 <span class="upicon"><img src="./images/upicon1.png"/></span></span></p>
         <ul class="hislist" v-show="isShow">
             <li>
-                <span class="pr300">期号&nbsp; &nbsp; &nbsp;</span><span class="center">&nbsp; &nbsp; &nbsp;开奖号</span>
+                <span class="pr300">期号&nbsp;</span><span class="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;开奖号</span>
             </li>
             <li v-for="code in list">
-                <span class="pr300">{{code.issue}}期</span><span class="red"><span class="blue dis">{{code.bonuscode.substring(0,14)}}</span>{{code.bonuscode.substring(14)}}</span>
+                <span class="pr300">{{code.issue}}期</span><span class="blue"><span class="red dis">{{code.bonuscode.substring(0,14)}}</span>{{code.bonuscode.substring(14)}}</span>
             </li>
         </ul>
-        <p class="rule lay-p clearfix"><span class="fl">请至少选择5个红球，2个蓝球</span></p>
+        <p class="rule lay-p clearfix" :class="{rule2:istop}"><span class="fl">请至少选择5个红球，2个蓝球</span></p>
         <div class="redball ballbox">
             <ul class="ball">
                 <li v-for="n in 35" @click="checkred(n)" :class=" {n,redarr} | calculationred(n)">{{n | minTen}}</li>
@@ -74,6 +74,7 @@
                 redarr: [], //红球
                 bluearr: [], //蓝球
                 checked: false, //默认不追加投注
+                istop:false,
                 zhuijia: '0',
                 multiple: 1, //倍数
                 betnum: '0', //注数
@@ -354,9 +355,9 @@
             toggle: function() {
                 this.isShow = !this.isShow;
                 if(this.isShow) {
-
+                  this.istop = true
                 } else {
-
+                  this.istop = false
                 }
             }
         },
@@ -434,243 +435,54 @@
   .fl{float:left;}
   .fr{float:right;}
   .clearfix{overflow: auto;zoom:1;}
-  .nav {width: 100%;height: 65px;background-color: #FFFFFF;font-size: 18px;line-height: 65px;text-align: center; border-bottom: 1px solid #b2b2b2;}
+  .nav {position:fixed;top:0;width: 100%;height: 60px;background-color: #FFFFFF;font-size: 18px;line-height: 60px;text-align: center; border-bottom: 1px solid #b2b2b2;}
   .nav .some {width: 15px;position: relative;margin-left: 18px;margin-top: 10px;}
-  .nav .some1[data-v-877f5d1c] {width: 25px;position: relative;margin-right: 18px;margin-top: 10px;}
+  .nav .some1 {width: 25px;position: relative;margin-right: 18px;margin-top: 10px;}
   .nav .some img,.nav .some1 img{width: 100%;}
   body {background-color: #f8f8f8;}
-
   .dis{padding-right: 15px;}
-    .logs {
-        font-size: 30px;
-        color: #00A0FF;
-        margin-left: 30px;
-        cursor: pointer;
-    }
-    .upicon img{
-      width: 14px;
-        margin: 8px 0 0 10px;
-    }
-
-    .checknum {
-        width: 100%;
-        height: 100%;
-    }
-
-    .checknum .hislist {
-        height: 500px;
-        overflow-y: auto;
-    }
-
-    .checknum .hislist li {
-        width: 100%;
-        line-height: 48px;
-        font-size: 25px;
-    }
-
-    .checknum .hislist li:nth-child(odd) {
-        background-color: #eee;
-    }
-
-    .checknum .pr300 {
-        padding-left: 40px;
-        padding-right: 160px;
-    }
-
-    .checknum .lay-p {
-      line-height: 30px;
-      font-size: 12px;
-      padding: 0 15px;
-    }
-
-    .checknum .pastwin {
-        background-color: #4fbdff;
-        color: #FFFFFF;
-    }
-
-    .checknum .rule {
-        color: #999;
-    }
-
-    .checknum .ballbox {
-        width: 94%;
-        margin: 15px auto 0 auto;
-        border-bottom: 1px solid #EEEEEE;
-    }
-
-    .checknum .redball ul li {
-        color: #ed4e39;
-    }
-
-    .checknum .blueball {
-        border: none;
-    }
-
-    .checknum .blueball ul li {
-        color: #00A0FF;
-    }
-
-    .checknum .ball li {
-        display: inline-block;
-        margin-right: 24px;
-        margin-bottom: 15px;
-        width: 105px;
-        height: 105px;
-        border: 1px solid #cdcdcd;
-        border-radius: 50%;
-        text-align: center;
-        line-height: 105px;
-        font-size: 44px;
-    }
-
-    .checknum .isred {
-        background-color: #e74c3c;
-        color: #FFFFFF !important;
-    }
-
-    .checknum .isblue {
-        background-color: #4476D8;
-        color: white !important;
-    }
-
-    .checknum .foot {
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #fff;
-        height: auto;
-        padding: 5px 15px 5px 15px;
-    }
-
-    .checknum .foot img {
-        width: 20px;
-        cursor: pointer;
-    }
-
-    .checknum .foot span {
-        display: inline-block;
-        text-align: center;
-    }
-
-    .checknum .foot .beishu {
-        display: inline-block;
-        margin-left: 7px;
-        line-height: 35px;
-        font-size: 14px;
-    }
-
-    .checknum .foot .bor {
-        border-top: 1px solid #cdcdcd;
-        border-bottom: 1px solid #cdcdcd;
-        width: 35px;
-        height: 35px;
-        text-align: center;
-    }
-
-    .checknum .foot .borr {
-        border: 1px solid #cdcdcd;
-        border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px;
-        width: 35px;
-        height: 35px;
-        text-align: center;
-        cursor: pointer;
-        margin-left: 5px;
-    }
-
-    .checknum .foot .borrr {
-        border: 1px solid #cdcdcd;
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
-        width: 35px;
-        height: 35px;
-        text-align: center;
-        cursor: pointer;
-        margin-right: 5px;
-    }
-
-    .checknum .foot .router-link-active {
-        text-decoration: none;
-    }
-
-    .checknum .total {
-        border-top: 1px solid #F8F8F8;
-        background-color: #fff;
-        line-height: 25px;
-        /*font-size: 40px;*/
-        padding: 2px 5px;
-    }
-
-    .checknum .total>.clear {
-        margin-left: 7px;
-        margin-right: 7px;
-        /*margin-top: .5rem;*/
-    }
-
-    .checknum .total>.total_txt {
-        /*line-height: 100px;*/
-        font-size: 15px;
-        color: #E74C3C;
-    }
-
-    .checknum .total>.bet {
-        font-size: 16px;
-        padding: 3px 12px;
-        border-radius: 3%;
-        color: #fff;
-        cursor: pointer;
-        border: 1px solid #ddd;
-        background-color: #ddd;
-    }
-
-    .checknum .total>.is_bet {
-        border: 1px solid #E74C3C;
-        background-color: #E74C3C;
-    }
-
-    .checknum .calculate {
-        background-color: #fff;
-        padding: 3px 7px;
-    }
-
-    .checknum .calculate>.randomBet {
-        border: 1px solid #ddd;
-        border-radius: 4%;
-        padding: 5px 5px;
-        font-size: 14px;
-        color: #E74C3C;
-    }
-
-    .checknum .calculate>.addBet {
-        border: 1px solid #ddd;
-        border-radius: 3%;
-        padding: 4px 8px;
-        cursor: pointer;
-        font-size: 14px;
-        color: #999;
-    }
-
-    .checknum .calculate>.is_addBet {
-        color: #E74C3C;
-    }
-    /*.checknum .calculate>.addMultiple {
-        font-size: 28px;
-    }
-
-    .checknum .calculate>.addMultiple>span {
-        line-height: 35px;
-        margin: 0 10px;
-    }
-
-    .checknum .calculate>.addMultiple .sdddq {
-        font-size: 1.25rem;
-        height: 2rem;
-        width: 7rem;
-    }*/
-    .zhuijiaBox{
-        width: 10%;
-        margin: 40px auto 0;
-    }
-
+  .upicon img{width: 14px;margin: 8px 0 0 10px;}
+  .checknum {width: 100%;height: 100%;overflow-y: auto;padding-bottom: 120px;}
+  .checknum .hislist {height: 200px;overflow-y: auto;margin-top: 90px;}
+  .checknum .hislist li {width: 100%;line-height: 30px;font-size: 12px;}
+  .checknum .hislist li:nth-child(odd) {background-color: #eee;}
+  .checknum .pr300 {padding-left: 40px;padding-right: 60px;}
+  .checknum .hislist .blue{color: #00A0FF; text-align: center}
+  .checknum .hislist .blue .red{color: #ed4e3c;}
+  .checknum .lay-p {line-height: 30px;font-size: 12px;padding: 0 15px;}
+  .checknum .pastwin {position: fixed;top:9%;width: 100%;background-color: #4fbdff;color: #FFFFFF;}
+  .checknum .rule {margin-top: 90px;color: #999;}
+  .checknum .ballbox {width: 94%;margin: 6px auto 0 auto;border-bottom: 1px solid #EEEEEE;}
+  .checknum .redball ul li {color: #ed4e39;}
+  .checknum .blueball {border: none;}
+  .checknum .blueball ul li {color: #00A0FF;}
+  .checknum .ball li {display: inline-block;margin: 4px 5px;width: 40px;height: 40px; border: 1px solid #cdcdcd;border-radius: 50%;text-align: center;line-height: 40px;font-size: 16px;}
+  .checknum .isred {background-color: #e74c3c;color: #FFFFFF !important;}
+  .checknum .isblue {background-color: #00A0FF;color: white !important;}
+  .zhuijiaBox{width: 10%;margin: 40px auto 0;}
+  /*foot*/
+  .checknum .foot {z-index:100;position: fixed;left: 0;right: 0;bottom: 0;background-color: #fff; height: auto;padding: 5px 0;}
+  .checknum .foot img {width: 20px;cursor: pointer;vertical-align: middle;}
+  .checknum .foot span {display: inline-block;text-align: center;}
+  .checknum .calculate {background-color: #fff;padding: 5px 15px;border-top: 1px solid  #F8F8F8;}
+  .checknum .calculate>.randomBet {border: 1px solid #ddd;border-radius: 4%;padding: 5px 7px;font-size: 14px;color: #E74C3C;margin-top: 2px;}
+  .checknum .foot .beishu {display: inline-block;margin-left: 15px;line-height: 30px;font-size: 14px;}
+  .checknum .foot .bor {border-top: 1px solid #cdcdcd;border-bottom: 1px solid #cdcdcd;width: 30px;height: 30px;text-align: center;}
+  .checknum .foot .borr {border: 1px solid #cdcdcd;border-top-left-radius: 3px;border-bottom-left-radius: 3px; width: 30px; height: 30px;text-align: center; cursor: pointer; margin-left: 4px;}
+  .checknum .foot .borrr {border: 1px solid #cdcdcd;border-top-right-radius: 3px;border-bottom-right-radius: 3px;width: 30px;height: 30px;text-align: center;cursor: pointer;margin-right: 4px;}
+  .checknum .calculate>.addBet {border: 1px solid #ddd;border-radius: 6%;padding: 5px 7px;cursor: pointer;font-size: 14px;color: #999;margin-top: 2px;}
+  .checknum .calculate>.is_addBet {color: #E74C3C;}
+  .checknum .total {border-top: 1px solid #F8F8F8;background-color: #fff;line-height: 25px;padding: 5px 15px;}
+  .checknum .total>.clear {margin-right: 7px;}
+  .checknum .total>.total_txt {font-size: 15px;color: #E74C3C;}
+  .checknum .total>.bet {font-size: 16px;padding: 3px 12px;border-radius: 6%; color: #fff; cursor: pointer; border: 1px solid #ddd; background-color: #ddd;}
+  .checknum .total>.is_bet {border: 1px solid #E74C3C;background-color: #E74C3C;}
+  .checknum .foot .router-link-active {text-decoration: none;}
+  .rule2{margin-top: 0 !important;}
+  /*.logs {*/
+  /*font-size: 30px;*/
+  /*color: #00A0FF;*/
+  /*margin-left: 30px;*/
+  /*cursor: pointer;*/
+  /*}*/
 </style>

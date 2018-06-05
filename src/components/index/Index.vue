@@ -108,6 +108,7 @@
   .clearfix{overflow: auto; zoom:1;}
   .fcol333{color: #333;}
   .mtop{margin-top: 18px;}
+  ul li{list-style: none;}
   .box1{position: relative;width: 100%;background-color: #fff;border-top: 1px solid #D0D0D0;border-bottom: 1px solid #D0D0D0;height: 49px; line-height: 49px;font-size: 18px;padding: 0 15px;}
   .box2{width: 100%; height: 42px; line-height: 42px;padding-left: 15px;}
   .bag-check .mr{margin-right: 12px;}

@@ -1,0 +1,21 @@
+<!DOCTYPE html><html><head><span style="display: none"> <?php
+include "../../lanewechat.php";
+// $aa = $_GET['user_id']?$_GET['user_id']:'oKRYgv_I91FSUOX8kYOhP05AXQ_0';
+if($_GET['user_id']){
+  $redirect_uri = 'LaneWeChat2/kuailededan/dist/index.php#/friend_id/'.$_GET['user_id'];
+}else{
+  $redirect_uri = 'LaneWeChat2/kuailededan/dist/index.php';
+}
+
+\LaneWeChat\Core\WeChatOAuth::getCode($redirect_uri, $b, $scope = 'snsapi_userinfo');
+$code = $_GET['code'];
+
+$a = \LaneWeChat\Core\WeChatOAuth::getAccessTokenAndOpenId($code);
+$user_info = \LaneWeChat\Core\WeChatOAuth::getUserInfo($a['access_token'], $a['openid'], $lang = 'zh_CN');
+echo "<script type=>
+   window.localStorage.setItem('user_id'," . "'" . $user_info['openid'] . "'" . ");
+   window.localStorage.setItem('nickname'," . "'" . $user_info['nickname'] . "'" . ");
+   window.localStorage.setItem('headimgurl'," . "'" . $user_info['headimgurl'] . "'" . ");
+   //alert(window.localStorage.getItem('user_id'));
+   </script>";
+?> </span><meta charset=utf-8><title>助力世界杯</title><meta name=author content=jqq><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0"><meta http-equiv=Content-Type content="text/html; charset=utf-8"><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-status-bar-style content=black><meta name=format-detection content="telephone=no"><meta http-equiv=Expires content=-1><meta http-equiv=Cache-Control content=no-cache><meta http-equiv=Pragma content=no-cache><script src=http://res.wx.qq.com/open/js/jweixin-1.0.0.js></script><link href=./static/css/app.5b28a707737a2d488bfec1ed10ab53d9.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=./static/js/manifest.d7a6c71dee2f34c2a514.js></script><script type=text/javascript src=./static/js/vendor.3fe956cad6dce08dd4e9.js></script><script type=text/javascript src=./static/js/app.f5939876b06ed3186b36.js></script><script type=text/javascript src=./static/js/vue.ddcea77505cb9a68d445.js></script></body></html>

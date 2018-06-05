@@ -242,6 +242,13 @@
 	}
 </style>
 <style scoped>
+  .fl{float:left;}
+  .fr{float:right;}
+  .clearfix{overflow: auto;zoom:1;}
+  .nav {width: 100%;height: 60px;background-color: #FFFFFF;font-size: 18px;line-height: 60px;text-align: center; border-bottom: 1px solid #b2b2b2;}
+  .nav .some {width: 15px;position: relative;margin-left: 18px;margin-top: 10px;}
+  .nav .some1 {width: 25px;position: relative;margin-right: 18px;margin-top: 10px;}
+  .nav .some img,.nav .some1 img{width: 100%;}
 	.elshow{
 		display: none;
 	}
