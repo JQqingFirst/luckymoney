@@ -55,9 +55,18 @@
 				items: test.fetch(),
 				orderno: test.fetch(),
 				iconURL: '123',
-				name: '123',
+				name: '',
 				orderAmount: '0',
-				paylist: [],
+				paylist: [
+//          {"icon": "https://a1.leaicai.com/20170717/7a90931e_ot7tip.png",
+//        "text": "账户余额",
+//        "type": 1,
+//        "channel": ""},
+//          {"icon": "https://a1.leaicai.com/20170717/7a90931e_ot7tip.png",
+//            "text": "微信支付",
+//            "type": 2,
+//            "channel": ""}
+        ],
                 payed_type: -1,
 				icon: '123',
 				text: '123',
@@ -233,157 +242,65 @@
 	.el-radio-group .el-radio{
 		z-index: 100;
 		width: 100%;
-		font-size: 40px;
+		font-size: 16px;
 		color: #333333;
 
 	}
 	.el-radio+.el-radio{
 		margin-left: 0;
 	}
+  .paypage .el-radio__label {
+    font-size: 16px;
+    line-height: 50px;
+  }
+
+  .paypage .el-radio__input {
+    line-height: 50px;
+  }
+
+  .paypage  .el-radio__input {
+    position: absolute;
+    right: 2%;
+  }
+  .paypage  .el-radio__input .el-radio__inner{
+    width: 20px;
+    height: 20px;
+  }
+
+  .paypage .el-radio__input.is-checked .el-radio__inner {
+    border-color: #E74C3C;
+    background:#E74C3C;
+  }
 </style>
 <style scoped>
+  .paypage{background-color: #f3f3f3;}
   .fl{float:left;}
   .fr{float:right;}
+  ul li{list-style: none;}
   .clearfix{overflow: auto;zoom:1;}
   .nav {width: 100%;height: 60px;background-color: #FFFFFF;font-size: 18px;line-height: 60px;text-align: center; border-bottom: 1px solid #b2b2b2;}
   .nav .some {width: 15px;position: relative;margin-left: 18px;margin-top: 10px;}
   .nav .some1 {width: 25px;position: relative;margin-right: 18px;margin-top: 10px;}
   .nav .some img,.nav .some1 img{width: 100%;}
-	.elshow{
-		display: none;
-	}
-	.paypage .nav .some {
-		position: absolute;
-		left: 25px;
-		margin-top: 30px;
-	}
-
-	.paypage .nav .some img {
-		height: 35px;
-		width: 35px;
-	}
-
-	.wraptop {
-		position: relative;
-		width: 100%;
-		background-color: #fff;
-		margin: 0 auto;
-	}
-
-	.con {
-		width: 94%;
-		margin: 0 3%;
-		line-height: 90px;
-		font-size: 38px;
-	}
-
-	.con1 {
-		width: 92%;
-		margin: 0 auto;
-		padding: 15px 0;
-		border-bottom: 1px solid #EEEEEE;
-	}
-
-	.ballsize {
-		width: 110px;
-	}
-
-	.ballsize img {
-		width: 110px;
-	}
-
-	.win_type {
-		line-height: 110px;
-		font-size: 45px;
-		margin-left: 25px;
-	}
-
-	.wrapbottom {
-		position: relative;
-		width: 100%;
-		background-color: #fff;
-		margin-top: 15px;
-	}
-
-	.boxline {
-		width: 100%;
-		border: 1px solid #F8F8F8;
-	}
-
-	.typebox {
-		display: block;
-		width: 94%;
-		margin: 0 3%;
-		font-size: 38px;
-		padding: 30px 0;
-	}
-
+	.elshow{display: none;}
+	.wraptop {position: relative;width: 100%;background-color: #fff;margin: 10px auto 0;}
+	.con {width: 94%;margin: 0 3%;line-height: 40px;font-size: 16px;}
+	.con1 {width: 92%;margin: 0 auto;padding: 7px 0;border-bottom: 1px solid #EEEEEE;}
+	.ballsize {width: 40px;}
+	.ballsize img {width: 100%;}
+	.win_type {line-height: 40px;font-size: 18px;margin-left: 15px;}
+	.wrapbottom {position: relative;width: 100%;background-color: #fff;margin-top: 10px;}
+	.boxline {width: 100%;border: 1px solid #F8F8F8;}
+	.typebox {display: block;width: 94%;margin: 0 3%;font-size: 16px;padding: 10px 0;}
 	.typebox:hover,
 	.typebox:link,
-	.typebox:visited {
-		color: #333;
-	}
-
-	.typebox .typetxt {
-		line-height: 90px;
-	}
-	.typebox .ticon{
-		width: 12%;
-		display: inline-block;
-	}
-	.typebox .wayicon {
-		width: 90px;
-		height: 90px;
-		margin-bottom: 10px;
-	}
-
-	.typebox .wayicon img {
-		width: 100%;
-	}
-	.foot {
-		position: fixed;
-		bottom: 20px;
-		left: 50%;
-		margin-left: -300px;
-		width: 600px;
-		background-color: #e74c3c;
-		color: #fff;
-		height: 100px;
-		line-height: 100px;
-		text-align: center;
-		border-radius: 8px;
-		font-size: 44px;
-		cursor: pointer;
-	}
-
+	.typebox:visited {color: #333;}
+	.typebox .typetxt {line-height: 45px;}
+	.typebox .ticon{width: 12%;display: inline-block;}
+	.typebox .wayicon {width: 45px;height: 45px;margin-bottom: 5px;}
+	.typebox .wayicon img {width: 100%;}
+	.foot {position: fixed;bottom: 20px;left: 50%;margin-left: -150px;width: 300px;background-color: #e74c3c;color: #fff;height: 50px;line-height: 50px;text-align: center;border-radius: 4px;font-size: 20px;cursor: pointer;}
 	.foot:link,
 	.foot:visited,
-	.foot:hover {
-		color: #fff;
-	}
-</style>
-<style>
-	.paypage .el-radio__label {
-		font-size: 38px;
-		line-height: 100px;
-	}
-
-	.paypage .el-radio__input {
-		line-height: 100px;
-	}
-
-	.paypage  .el-radio__input {
-		position: absolute;
-		right: 2%;
-	}
-	.paypage  .el-radio__input .el-radio__inner{
-		width: 40px;
-		height: 40px;
-	}
-
-	.paypage .el-radio__input.is-checked .el-radio__inner {
-		border-color: #E74C3C;
-		background:#E74C3C;
-	}
-
+	.foot:hover {color: #fff;}
 </style>

@@ -10,6 +10,9 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
+  Radio,
+  RadioGroup,
+  RadioButton,
 	Button,
 	Pagination,
 	Tabs,
@@ -30,6 +33,9 @@ import {
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
+Vue.use(Radio)
+Vue.use(RadioGroup)
+Vue.use(RadioButton)
 Vue.use(Button);
 Vue.use(Pagination);
 Vue.use(Tabs);
