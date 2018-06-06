@@ -41,12 +41,12 @@
                 <a class="randomBet fl" @click="randomcheck()">随机一注</a>
                 <span class="beishu">投<span class="borr" @click="checkmultiplecut()">-</span><span class="bor">{{multiple}}</span><span class="borrr" @click="checkmultipleadd()">+</span>倍</span>
                 <!--<router-link class="addBet fr" v-bind:class="{is_addBet:isActive}" :to="{path:(isActive?'/numlist':'')}">加入投注单</router-link>-->
-                <div class="addBet fr" v-bind:class="{is_addBet:isActive}" @click="addlist()">加入投注单</div>
+                <!--<div class="addBet fr" v-bind:class="{is_addBet:isActive}" >加入投注单</div>-->
             </div>
             <div class="total clearfix">
                 <span class="clear" @click="clear()"><img src="./images/clear.png"/></span>
                 <span class="total_txt">合计{{summoney}}元&nbsp;共{{sumnum}}注</span>
-                <router-link class="bet betbtn fr" v-bind:class="{is_bet:isActives}" :to="{path:(isActives?'/Dltnumlist':'')}">
+                <router-link class="bet betbtn fr" v-bind:class="{is_bet:isActives}" :to="{path:(isActives?'/Dltnumlist':'')}" @click="addlist()">
                     <span>投注</span>
                 </router-link>
             </div>
@@ -169,6 +169,7 @@
                     } else {
                         a.push(num)
                         this.redarr = a
+
                     }
                 }
                 for(var y = 0; y < 2; y++) {
@@ -208,35 +209,38 @@
                     zhuijia: this.zhuijia
                 }
             },
+            addonelist(){
+              if(this.redarr.length >= 5 && this.bluearr.length >= 2) {
+                let orderinfo = {
+                  redorder: this.redarr,
+                  blueorder: this.bluearr,
+                  zhuijia: this.zhuijia,
+                  betmoney: this.cost,
+                  betnum: this.betnum,
+                  multiple: this.multiple,
+                  betype: this.ordertype,
+                  type: this.typenum
+                }
+                console.log(orderinfo)
+                this.items[0] =orderinfo
+                this.summoney = 0
+                this.sumnum = 0
+                if(this.items.length > 0) {
+                  this.isActives = true
+                } else {
+                  this.isActives = false
+                }
+//                for(var i = 0; i < this.items.length; i++) {
+//                  this.summoney = this.items[i].betmoney
+//                  this.sumnum += this.items[i].betnum
+//                }
+              }
+            },
             addlist() {
                 if(this.redarr.length >= 5 && this.bluearr.length >= 2) {
-                    let orderinfo = {
-                        redorder: this.redarr,
-                        blueorder: this.bluearr,
-                        zhuijia: this.zhuijia,
-                        betmoney: this.cost,
-                        betnum: this.betnum,
-                        multiple: this.multiple,
-                        betype: this.ordertype,
-                        type: this.typenum
-                    }
-                    console.log(orderinfo)
-                    this.items.push(orderinfo)
-                    this.summoney = 0
-                    this.sumnum = 0
-                    if(this.items.length > 0) {
-                        this.isActives = true
-                    } else {
-                        this.isActives = false
-                    }
-                    for(var i = 0; i < this.items.length; i++) {
-                        this.summoney += this.items[i].betmoney
-                        this.sumnum += this.items[i].betnum
-                    }
                     this.clearone()
                     console.log(orderinfo)
                     console.log(this.items)
-
                 } else {
                     alert("请至少选择5个红球,2个蓝球")
                     return
@@ -246,7 +250,6 @@
             clearone() {
                 this.redarr = []
                 this.bluearr = []
-
                 this.multiple = 1
             },
             clear() {
@@ -259,6 +262,112 @@
 
                 alert('已清空')
             },
+            //蓝球复试排列组合
+            plzh: function(self, arr, index, newarr){
+              if (self == "") {
+                self = arr[index++];
+                this.plzh(self, arr, index, newarr);
+              } else if (index == arr.length) {
+                for(let i = 0; i< arr.length; i++){
+                  if(arr[i] == self){
+                    index = i;
+                  }
+                }
+//                index = $.inArray(self, arr);
+                if (index == arr.length - 1) {
+                  return;
+                } else {
+                  this.plzh("", arr, ++index, newarr);
+                }
+              } else {
+                let other = arr[index++];
+                newarr.push(self + other);
+                this.plzh(self, arr, index, newarr);
+              }
+            },
+            //红球复试排列组合
+            plzhred: function(_selfs, _arr, _indexs, _newarr, _where){
+              if (_selfs != null && _arr!= null && _arr.length >= _selfs.length) {
+                if (_where < _selfs.length - 1) { //非末位
+                  var index = _indexs[_where];
+                  if (index == _arr.length) { //非末位末尾
+                    --_where;
+                    if (_where == -1) { //首位超出
+                      return;
+                    } else {
+                      _indexs[_where] = _indexs[_where] + 1;
+                      for (var i = _where + 1; i < _selfs.length; i++) {
+                        _indexs[i] = _indexs[i - 1] + 1;
+                      }
+                      this.plzhred(_selfs, _arr, _indexs, _newarr, _where);
+                    }
+                  } else {
+                    _selfs[_where] = _arr[index];
+                    this.plzhred(_selfs, _arr, _indexs, _newarr, ++_where);
+                  }
+                } else { //末位
+                  var index = _indexs[_where];
+                  if (index == _arr.length) {  //直接末位末尾
+                    --_where;
+                    if (_where == -1) { //末位超出即 单关
+                      return;
+                    }
+                    _indexs[_where] = _indexs[_where] + 1;
+                    for (var i = _where + 1; i < _selfs.length; i++) {
+                      _indexs[i] = _indexs[i - 1] + 1;
+                    }
+                    this.plzhred(_selfs, _arr, _indexs, _newarr, _where);
+                  } else {
+                    _selfs[_where] = _arr[index];
+                    _newarr.push(this.deepCoby(_selfs));
+                    var _nextIndex = _indexs[_where] + 1;
+                    if (_nextIndex < _arr.length) {
+                      _indexs[_where] = _nextIndex;
+                      this.plzhred(_selfs, _arr, _indexs, _newarr, _where);
+                    } else { //下一个末位末尾
+                      --_where;
+                      if (_where == -1) {
+                        return;
+                      }
+                      _indexs[_where] = _indexs[_where] + 1;
+                      for (var i = _where + 1; i < _selfs.length; i++) {
+                        _indexs[i] = _indexs[i - 1] + 1;
+                      }
+                      this.plzhred(_selfs, _arr, _indexs, _newarr, _where);
+                    }
+                  }
+                }
+              }
+            },
+            deepCoby: function (obj) {
+            // Handle the 3 simple types, and null or undefined
+            if (null == obj || "object" != typeof obj)
+              return obj;
+            // Handle Date
+            if (obj instanceof Date) {
+              var copy = new Date();
+              copy.setTime(obj.getTime());
+              return copy;
+            }
+
+            // Handle Array
+            if (obj instanceof Array) {
+              var copy = [];
+              for (var i = 0, len = obj.length; i < len; ++i) {
+                copy[i] = this.deepCoby(obj[i]);
+              }
+              return copy;
+            }
+            // Handle Object
+            if (obj instanceof Object) {
+              var copy = {};
+              for (var attr in obj) {
+                if (obj.hasOwnProperty(attr)) copy[attr] = this.deepCoby(obj[attr]);
+              }
+              return copy;
+            }
+            throw new Error("Unable to copy obj! Its type isn't supported.");
+          },
             calculation: function() {
                 if(this.redarr.length < 5) {
                     this.betnum = 0;
@@ -270,18 +379,19 @@
                     this.betnum = this.bluearr.length/2;
                     this.betmoney = this.betnum * 2;
                     this.cost = this.betmoney;
-
                     if(this.bluearr.length > 1) {
-
                         if(this.bluearr.length == 2) {
                             this.isActive = true;
                             this.ordertype = '标准'
                             this.typenum = 1
-
                         } else if(this.bluearr.length > 2) {
                             this.isActive = true;
                             this.typenum = 4
                             this.ordertype = '蓝色复式'
+                          var newarr = []
+                          this.plzh("",this.bluearr, 0, newarr)
+                          this.betnum = newarr.length
+
                         }
                         let orderinfo = {
                             redorder: this.redarr,
@@ -292,10 +402,6 @@
                             type: this.typenum,
                             zhuijia: this.zhuijia
                         }
-                        //												this.ORDER_TYPE(orderinfo);
-                        //						this.oneodrder = this.redarr + '-' + this.bluearr;
-                        //						this.ADD_ORDER(this.oneodrder);
-                        //				    	    alert(this.oneodrder);
                     } else {
                         this.isActive = false;
                         return
@@ -319,9 +425,27 @@
                     if(this.bluearr.length == 2) {
                         this.ordertype = '红色复试'
                         this.typenum = 3
+                      var _selfs = new Array(5);
+                      var _arr = this.redarr;
+                      var _indexs = [0,1,2,3,4]; //初始排列组合为 黑白黄，即对应的_arr的索引下标为0,1,2
+                      var _where = 0;
+                      var _newarr = [];
+                      this.plzhred(_selfs, _arr, _indexs, _newarr, _where);
+//                      console.log(JSON.stringify(_newarr));
+                      this.betnum = _newarr.length
                     } else if(this.bluearr.length > 2) {
                         this.ordertype = '全复试'
                         this.typenum = 5
+                      var newarr = []
+                      this.plzh("",this.bluearr, 0, newarr)
+
+                      var _selfs = new Array(5);
+                      var _arr = this.redarr;
+                      var _indexs = [0,1,2,3,4]; //初始排列组合为 黑白黄，即对应的_arr的索引下标为0,1,2
+                      var _where = 0;
+                      var _newarr = [];
+                      this.plzhred(_selfs, _arr, _indexs, _newarr, _where);
+                      this.betnum = newarr.length * _newarr.length
                     }
                 }
                 let orderinfo = {
@@ -334,12 +458,7 @@
                     type: this.typenum,
                     zhuijia: this.zhuijia
                 }
-                //				this.ORDER_TYPE(orderinfo);
-                //				this.oneodrder = this.redarr + '-' + this.bluearr;
-                //				this.ADD_ORDER(this.oneodrder);
-                //				this.ORDER_TYPE({redorder:this.redarr,blueorder:this.bluearr,betmoney:this.betmoney,betnum:this.betnum});
-                //				    	    alert(this.oneodrder);
-                //				return (times / ss * (this.bluearr.length)); //复试计算公式
+
                 if(this.cost >= 20000) {
                     alert('单次购买不超过2万元')
                     return;
@@ -390,10 +509,12 @@
         },
         watch: {
             redarr: function(val, oldval) {
-                this.calculation();
+              this.calculation();
             },
             bluearr: function(val, oldval) {
+
                 this.calculation();
+
             },
             checked: function(val,oldval){
                 this.ifzhujia();
@@ -403,6 +524,7 @@
                     test.save(items)
                 },
                 deep: true
+
             },
 
         },
