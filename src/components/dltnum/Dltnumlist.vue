@@ -3,11 +3,6 @@
     <div class="nav clearfix">投注单
       <span class="fl some" @click="clearall()" onClick="javascript :history.back(-1);"><img src="./images/backicon.png"/></span>
     </div>
-    <div class="randbox">
-      <span class="mar" @click="randomcheck()">+&nbsp;随机1注</span>
-      <span class="mar" @click="randomcheck5()">+&nbsp;随机5注</span>
-      <span @click="randomcheck10()">+&nbsp;随机10注</span>
-    </div>
     <div class="listgroup">
       <div class="listup">
         <img src="./images/listup.png" alt="listup"/>
@@ -18,10 +13,14 @@
             <p><span v-for="n in item.redorder" class="red">{{n | minTen}}</span>-<span v-for="n in item.blueorder"
                                                                                         class="blue">{{n | minTen}}</span>
             </p>
-            <p class="distance"><span>{{item.betype}}</span><span>{{item.betmoney}}元</span><span>{{item.betnum}}注</span>
+            <p class="distance">
+              <span>{{item.betype}}</span>
+              <span>{{item.betnum}}注</span>
+              <span>{{item.multiple}}倍</span>
+              <span>{{item.betmoney}}元</span>
             </p>
           </div>
-          <p class="clear fr" @click="removeitem(item)"><img src="./images/clear.png"/></p>
+          <p class="clear fr" @click="removeitem(item)"><img src="./images/clearnew.png"/></p>
         </div>
       </div>
     </div>
@@ -35,7 +34,10 @@
       <div class="nav clearfix">
         <span class="fl some" @click="clearall()"><img src="./images/clear.png"/></span>
         <span class="red">共{{money}}元</span>&nbsp;<span class="fons">{{betnum}}注</span>
-        <span class="fr isorder" v-bind:class="{isclick:isActive}" @click="payorder()">付款</span>
+        <span class="fr isorder" :class="{isclick:isActive}" @click="payorder()">
+          <!--:to="{path:(isActive?'/':'')}"-->
+            付款
+        </span>
       </div>
     </div>
   </div>
@@ -50,6 +52,7 @@
     data() {
       return {
         items: test.fetch(),
+        codeObj:test.codefetch(),
         title: '投注单',
         betnum: 0,
         redarr: null,
@@ -71,8 +74,8 @@
       init() {
         var total = 0;
         var count = 0
+        console.log(this.items)
         for (var i = 0; i < this.items.length; i++) {
-
           total += this.items[i].betmoney
           count += this.items[i].betnum
         }
@@ -93,10 +96,10 @@
         var count = 0
         for (var i = 0; i < this.items.length; i++) {
           var codes = {
-            cost: parseInt(this.items[i].betmoney),
-            num: parseInt(this.items[i].multiple),
-            type: this.items[i].type,
-            code: this.getcode(this.items[i])
+            cost: parseInt(this.items[i].betmoney),  //单注金额
+            num: parseInt(this.items[i].multiple),  //单注倍数
+            type: this.items[i].type,   //单注类型(标准/复试)
+            code: this.getcode(this.items[i]) //单注选号
           }
           total += this.items[i].betmoney
           count += this.items[i].betnum
@@ -105,16 +108,21 @@
           codesList.push(codes)
         }
         var codesJson = {
-          total: parseInt(total),
+          award_stop: '0', //追号中奖停 (暂无追号)
+          total: parseInt(total), //总金额
           codes: codesList,
-          issues: 1
+          issues: 1,  //追期
+          betNum: this.betnum  //注数
         }
-        return JSON.stringify(codesJson)
+        console.log(codesJson)
+        test.saveCode(codesJson)
+        return codesJson
+//        return JSON.stringify(codesJson)
       },
       getcode(orderinfo) {
         var code = '';
         for (var i = 0; i < orderinfo.redorder.length; i++) {
-          if (orderinfo.redorder[i] < 10) {
+          if (orderinfo.redorder[i] < 10 && orderinfo.redorder[i].length < 2) {
             orderinfo.redorder[i] = '0' + orderinfo.redorder[i];
           }
           code += orderinfo.redorder[i];
@@ -122,7 +130,7 @@
         }
         if (orderinfo.type == 1) {
           for (var i = 0; i < orderinfo.blueorder.length; i++) {
-            if (orderinfo.blueorder[i] < 10) {
+            if (orderinfo.blueorder[i] < 10 && orderinfo.redorder[i].length < 2) {
               orderinfo.blueorder[i] = '0' + orderinfo.blueorder[i];
             }
             code += orderinfo.blueorder[i];
@@ -132,7 +140,7 @@
         } else if (orderinfo.type == 2) {
           code += "-";
           for (var i = 0; i < orderinfo.blueorder.length; i++) {
-            if (orderinfo.blueorder[i] < 10) {
+            if (orderinfo.blueorder[i] < 10 && orderinfo.redorder[i].length < 2) {
               orderinfo.blueorder[i] = '0' + orderinfo.blueorder[i];
             }
             code += orderinfo.blueorder[i];
@@ -142,82 +150,35 @@
         }
         return code
       },
-      randomcheck() {
-        let a = [];
-        let b = [];
-        for (var x = 0; x < 5; x++) {
-          let num = Math.floor(Math.random() * (35 - 1) + 1);
-          if (a.indexOf(num) !== -1) {
-            x--
-          } else {
-            a.push(num)
-            this.redarr = a
-          }
-        }
-        for (var y = 0; y < 2; y++) {
-          let num2 = Math.floor(Math.random() * (12 - 1) + 1);
-          if (b.indexOf(num2) !== -1) {
-            y--
-          } else {
-            b.push(num2)
-            this.bluearr = b
-          }
-        }
-
-        let orderinfo = {
-          redorder: this.redarr,
-          blueorder: this.bluearr,
-          betmoney: 2,
-          betnum: 1,
-          multiple: 1,
-          betype: '标准',
-          type: 1,
-          zhuijia: 0
-        }
-        this.items.unshift(orderinfo)
-        this.init()
-      },
-      randomcheck5() {
-        for (var x = 0; x < 5; x++) {
-          this.randomcheck()
-        }
-      },
-      randomcheck10() {
-        for (var x = 0; x < 10; x++) {
-          this.randomcheck()
-        }
-      },
-      async payorder() {
+       payorder() {
         if (this.isActive) {
-          let code = this.createJson(this.items)
-          let y = await dltpayCode({
-            req: code
-          })
-
-          if (y.data.errno == 1001 || y.data.errno == 6 || y.data.errno == 3) {
-            alert(y.data.errmsg)
-            if (y.data.errmsg == "用户未登录") {
-              window.location.href = '#/login'
-            } else {
-              return;
-            }
-          } else if (y.data.errno == 0) {
-            const orderno = ''
-            window.localStorage.setItem('orderno', y.data.data.orderNo)
-            window.location.href = '#/paypage'
-          } else {
-            alert(y.data.errmsg)
-          }
-          console.log(y)
+          test.saveCode(this.createJson(this.items))
+//          this.createJson(this.items) = null
+//          this.codeObj = this.createJson(this.items)
+//            let code = this.createJson(this.items)
+//          let y = await dltpayCode({
+//            req: code
+//          })
+//
+//          if (y.data.errno == 1001 || y.data.errno == 6 || y.data.errno == 3) {
+//            alert(y.data.errmsg)
+//            if (y.data.errmsg == "用户未登录") {
+//              window.location.href = '#/login'
+//            } else {
+//              return;
+//            }
+//          } else if (y.data.errno == 0) {
+//            const orderno = ''
+//            window.localStorage.setItem('orderno', y.data.data.orderNo)
+//            window.location.href = '#/paypage'
+//          } else {
+//            alert(y.data.errmsg)
+//          }
+//          console.log(y)
         }
 
       },
-      beforeMount() {
-        //				alert(this.users)
-        //				this.users = 'ou3anbly1jo4oismju1sk2xfrfg4i77'
-        //				document.cookie = "LACTK=" + this.users;
-        //				alert(document.cookie)
-      },
+      beforeMount() {},
       removeByValue(arr, val) {
         for (var i = 0; i < arr.length; i++) {
           if (arr[i] == val) {
@@ -230,7 +191,6 @@
         console.log(item)
         this.removeByValue(this.items, item)
         this.init()
-        //				this.active();
       },
       clearall() {
         this.items.splice(0, this.items.length)
@@ -254,6 +214,11 @@
         handler: function (items) {
           test.save(items)
         },
+        codeObj:{
+          handler: function (codeObj) {
+            test.saveCode(codeObj)
+          },
+        },
         deep: true
       },
     },
@@ -263,18 +228,18 @@
   .fl{float:left;}
   .fr{float:right;}
   .clearfix{overflow: auto;zoom:1;}
-  .nav {width: 100%;height: 60px;background-color: #FFFFFF;font-size: 18px;line-height: 60px;text-align: center; border-bottom: 1px solid #b2b2b2;}
-  .nav .some {width: 15px;position: relative;margin-left: 18px;margin-top: 10px;}
+  .nav {width: 100%;height: 50px;background-color: #FFFFFF;font-size: 18px;line-height: 50px;text-align: center; border-bottom: 1px solid #b2b2b2;}
+  .nav .some {width: 10px;position: relative;margin-left: 15px;}
   .nav .some1 {width: 25px;position: relative;margin-right: 18px;margin-top: 10px;}
-  .nav .some img,.nav .some1 img{width: 100%;}
+  .nav .some img,.nav .some1 img{width: 100%; vertical-align: middle;}
   body {background-color: #F3F3F3;}
-  .numlist{background-color: #F3F3F3;min-height: 600px;padding-bottom: 80px;}
+  .numlist{background-color: #F3F3F3;min-height: 620px;padding-bottom: 80px;}
   .numlist .randbox {width: 90%;margin: 0 auto;padding: 15px 0;}
   .red{color:#ed4e3c;}
   .blue{color:#00A0FF;}
   .randbox span {display: inline-block;border: 1px solid #d2d2d2;border-radius: 4px;background-color: #FFFFFF;width: 28%;height: 40px;line-height: 40px;text-align: center;font-size: 14px;color: #E74C3C;}
   .randbox .mar {margin-right: 20px;}
-  .listup {width: 90%;margin: 0 auto;}
+  .listup {width: 90%;margin: 10px auto 0;}
   .listup img, .listdown img {width: 100%;}
   .listdown {width: 86%;margin: 0 auto;}
   .listcon {width: 100%;margin: 0 auto;position: relative;margin-top: -8px;z-index: 1;}
@@ -283,12 +248,15 @@
   .betlist .orderone {width: 84%;margin: 5px 10px;font-size: 15px;word-wrap: break-word;}
   .betlist .orderone .red {margin-right: 7px;}
   .betlist .orderone .blue {margin-left: 7px;}
-  .betlist .orderone .distance span {padding-right: 8px;font-size: 14px;color:#666;}
+  .betlist .orderone .distance span {padding-right: 2px;font-size: 14px;color:#666;}
   .clear {margin-top: 20px;margin-right: 15px;}
-  .txt {width: 100%;text-align: center;line-height: 25px;font-size: 12px;}
+  .txt {width: 100%;text-align: center;line-height: 30px;font-size: 12px;}
+  .txt a{color: #00A0FF; text-decoration: none;}
   .foot {z-index: 10;position: fixed;left: 0;right: 0;bottom: 0;width: 100%;background-color: #fff;}
   .foot .nav {border: none;}
+  .foot .nav img{width: 25px;}
   .fons {font-size: 20px;}
-  .isorder {margin-right: 15px;margin-top: 15px;border-radius: 5px;width: 50px;height: 30px;line-height: 30px;text-align: center;background-color: #EEEEEE;color: #666;font-size: 18px;}
+  .isorder {margin-right: 15px;margin-top: 10px;border-radius: 4px;width: 50px;height: 30px;line-height: 30px;text-align: center;background-color: #EEEEEE;color: #666;font-size: 18px;}
+  .router-link-active {text-decoration: none;}
   .isclick {background-color: #e74c3c;color: #fff;}
 </style>

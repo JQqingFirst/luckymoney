@@ -40,13 +40,11 @@
             <div class="calculate clearfix">
                 <a class="randomBet fl" @click="randomcheck()">随机一注</a>
                 <span class="beishu">投<span class="borr" @click="checkmultiplecut()">-</span><span class="bor">{{multiple}}</span><span class="borrr" @click="checkmultipleadd()">+</span>倍</span>
-                <!--<router-link class="addBet fr" v-bind:class="{is_addBet:isActive}" :to="{path:(isActive?'/numlist':'')}">加入投注单</router-link>-->
-                <!--<div class="addBet fr" v-bind:class="{is_addBet:isActive}" >加入投注单</div>-->
             </div>
             <div class="total clearfix">
                 <span class="clear" @click="clear()"><img src="./images/clear.png"/></span>
-                <span class="total_txt">合计{{summoney}}元&nbsp;共{{sumnum}}注</span>
-                <router-link class="bet betbtn fr" v-bind:class="{is_bet:isActives}" :to="{path:(isActives?'/Dltnumlist':'')}" @click="addlist()">
+                <span class="total_txt">合计{{cost}}元&nbsp;共{{betnum}}注</span>
+                <router-link class="bet betbtn fr" v-bind:class="{is_bet:isActives}" :to="{path:(isActives?'/Dltnumlist':'')}">
                     <span>投注</span>
                 </router-link>
             </div>
@@ -55,7 +53,6 @@
 </template>
 <script type="text/javascript">
     import test from './js/test.js'
-//    import downicon from './images/downicon.png'
     import { mapState, mapMutations } from 'vuex'
     import axios from 'axios'
     import qs from 'qs'
@@ -169,7 +166,6 @@
                     } else {
                         a.push(num)
                         this.redarr = a
-
                     }
                 }
                 for(var y = 0; y < 2; y++) {
@@ -186,28 +182,30 @@
             checkmultiplecut() {
                 if(this.multiple > 1) {
                     this.multiple--;
+                  if(this.checked){
+                    this.cost = this.betnum  * this.multiple * 3;
+                  }else{
+                    this.cost = this.betnum  * this.multiple * 2;
+                  }
+                  this.addonelist()
                 } else {
                     this.multiple = 1;
                 }
-                this.cost = this.betmoney * this.multiple;
             },
             checkmultipleadd() {
                 if(this.multiple > 9998) {
                     this.multiple = 9999;
                 } else {
                     this.multiple++;
+                  if(this.checked){
+                    this.cost = this.betnum  * this.multiple * 3;
+                  }else{
+                    this.cost = this.betnum  * this.multiple * 2;
+                  }
+                  this.addonelist()
                 }
-                this.cost = this.betmoney * this.multiple;
-                let orderinfo = {
-                    redorder: this.redarr,
-                    blueorder: this.bluearr,
-                    betmoney: this.cost,
-                    betnum: this.betnum,
-                    multiple: this.multiple,
-                    betype: this.ordertype,
-                    type: this.typenum,
-                    zhuijia: this.zhuijia
-                }
+
+
             },
             addonelist(){
               if(this.redarr.length >= 5 && this.bluearr.length >= 2) {
@@ -221,19 +219,10 @@
                   betype: this.ordertype,
                   type: this.typenum
                 }
-                console.log(orderinfo)
-                this.items[0] =orderinfo
-                this.summoney = 0
-                this.sumnum = 0
-                if(this.items.length > 0) {
-                  this.isActives = true
-                } else {
-                  this.isActives = false
-                }
-//                for(var i = 0; i < this.items.length; i++) {
-//                  this.summoney = this.items[i].betmoney
-//                  this.sumnum += this.items[i].betnum
-//                }
+                this.items = []
+                this.items.push(orderinfo)
+                console.log(this.items)
+                this.ifzhujia()
               }
             },
             addlist() {
@@ -369,57 +358,39 @@
             throw new Error("Unable to copy obj! Its type isn't supported.");
           },
             calculation: function() {
-                if(this.redarr.length < 5) {
+                if(this.redarr.length < 5 || this.bluearr.length < 2) {
                     this.betnum = 0;
                     this.betmoney = 0;
-                    this.isActive = false;
+                    this.cost= 0;
+                    this.isActives = false;
                     return;
                 }
+
                 if(this.redarr.length == 5) {
                     this.betnum = this.bluearr.length/2;
-                    this.betmoney = this.betnum * 2;
-                    this.cost = this.betmoney;
+                  this.cost = this.betnum * 2 * this.multiple;
                     if(this.bluearr.length > 1) {
                         if(this.bluearr.length == 2) {
-                            this.isActive = true;
+                            this.isActives = true;
                             this.ordertype = '标准'
                             this.typenum = 1
                         } else if(this.bluearr.length > 2) {
-                            this.isActive = true;
+                            this.isActives = true;
                             this.typenum = 4
                             this.ordertype = '蓝色复式'
                           var newarr = []
                           this.plzh("",this.bluearr, 0, newarr)
                           this.betnum = newarr.length
-
+                          this.cost = this.betnum*2*this.multiple
                         }
-                        let orderinfo = {
-                            redorder: this.redarr,
-                            blueorder: this.bluearr,
-                            betmoney: this.cost,
-                            betnum: this.betnum,
-                            betype: this.ordertype,
-                            type: this.typenum,
-                            zhuijia: this.zhuijia
-                        }
+                        this.addonelist()
                     } else {
-                        this.isActive = false;
+                        this.isActives = false;
                         return
                     }
                     return
 
                 }
-                var times = 1,
-                    ss = 1;
-                for(let i = this.redarr.length - 4; i <= this.redarr.length; i++) {
-                    times = times * i;
-                }
-                for(let i = 1; i <= 5; i++) {
-                    ss = ss * i;
-                }
-                this.betnum = times / ss * (this.bluearr.length);
-                this.betmoney = (times / ss * (this.bluearr.length)) * 2;
-                this.cost = this.betmoney;
                 this.isActive = true;
                 if(this.redarr.length > 5) {
                     if(this.bluearr.length == 2) {
@@ -433,6 +404,7 @@
                       this.plzhred(_selfs, _arr, _indexs, _newarr, _where);
 //                      console.log(JSON.stringify(_newarr));
                       this.betnum = _newarr.length
+                      this.cost = this.betnum*2*this.multiple
                     } else if(this.bluearr.length > 2) {
                         this.ordertype = '全复试'
                         this.typenum = 5
@@ -446,19 +418,10 @@
                       var _newarr = [];
                       this.plzhred(_selfs, _arr, _indexs, _newarr, _where);
                       this.betnum = newarr.length * _newarr.length
+                      this.cost = this.betnum*2*this.multiple
                     }
                 }
-                let orderinfo = {
-                    redorder: this.redarr,
-                    blueorder: this.bluearr,
-                    betmoney: this.cost,
-                    betnum: this.betnum,
-                    multiple: this.multiple,
-                    betype: this.ordertype,
-                    type: this.typenum,
-                    zhuijia: this.zhuijia
-                }
-
+                this.addonelist()
                 if(this.cost >= 20000) {
                     alert('单次购买不超过2万元')
                     return;
@@ -467,9 +430,14 @@
             ifzhujia(){
                 if(this.checked){
                     this.zhuijia = '1'
+                    this.cost = this.betnum*3*this.multiple
+                    this.items[0].betmoney = this.cost
                 }else{
                     this.zhuijia = '0'
+                  this.cost = this.betnum*2*this.multiple
+                  this.items[0].betmoney = this.cost
                 }
+
             },
             toggle: function() {
                 this.isShow = !this.isShow;
@@ -512,9 +480,7 @@
               this.calculation();
             },
             bluearr: function(val, oldval) {
-
                 this.calculation();
-
             },
             checked: function(val,oldval){
                 this.ifzhujia();
@@ -524,14 +490,12 @@
                     test.save(items)
                 },
                 deep: true
-
             },
 
         },
         created() {},
         mounted() {
             this.init();
-
         }
     }
 </script>
@@ -558,9 +522,9 @@
   .fr{float:right;}
   .clearfix{overflow: auto;zoom:1;}
   .nav {position:fixed;top:0;width: 100%;height: 60px;background-color: #FFFFFF;font-size: 18px;line-height: 60px;text-align: center; border-bottom: 1px solid #b2b2b2;}
-  .nav .some {width: 15px;position: relative;margin-left: 18px;margin-top: 10px;}
-  .nav .some1 {width: 25px;position: relative;margin-right: 18px;margin-top: 10px;}
-  .nav .some img,.nav .some1 img{width: 100%;}
+  .nav .some {width: 10px;position: relative;margin-left: 15px;}
+  .nav .some1 {width: 20px;position: relative;margin-right: 15px;}
+  .nav .some img,.nav .some1 img{width: 100%;vertical-align: middle;}
   body {background-color: #f8f8f8;}
   .dis{padding-right: 15px;}
   .upicon img{width: 14px;margin: 8px 0 0 10px;}
@@ -571,7 +535,7 @@
   .checknum .pr300 {padding-left: 40px;padding-right: 60px;}
   .checknum .hislist .blue{color: #00A0FF; text-align: center}
   .checknum .hislist .blue .red{color: #ed4e3c;}
-  .checknum .lay-p {line-height: 30px;font-size: 12px;padding: 0 15px;}
+  .checknum .lay-p {line-height: 25px;font-size: 12px;padding: 0 15px;}
   .checknum .pastwin {position: fixed;top:9%;width: 100%;background-color: #4fbdff;color: #FFFFFF;}
   .checknum .rule {margin-top: 90px;color: #999;}
   .checknum .ballbox {width: 94%;margin: 6px auto 0 auto;border-bottom: 1px solid #EEEEEE;}
@@ -597,7 +561,7 @@
   .checknum .total {border-top: 1px solid #F8F8F8;background-color: #fff;line-height: 25px;padding: 5px 15px;}
   .checknum .total>.clear {margin-right: 7px;}
   .checknum .total>.total_txt {font-size: 15px;color: #E74C3C;}
-  .checknum .total>.bet {font-size: 16px;padding: 3px 12px;border-radius: 6%; color: #fff; cursor: pointer; border: 1px solid #ddd; background-color: #ddd;}
+  .checknum .total>.bet {width: 50px; height: 30px; line-height: 30px; text-align: center; font-size: 18px;border-radius: 4px; color: #fff; cursor: pointer; border: 1px solid #ddd; background-color: #ddd;}
   .checknum .total>.is_bet {border: 1px solid #E74C3C;background-color: #E74C3C;}
   .checknum .foot .router-link-active {text-decoration: none;}
   .rule2{margin-top: 0 !important;}

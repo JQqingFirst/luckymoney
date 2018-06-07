@@ -13,6 +13,7 @@ import {
   Radio,
   RadioGroup,
   RadioButton,
+  Checkbox,
 	Button,
 	Pagination,
 	Tabs,
@@ -22,7 +23,6 @@ import {
 	Form,
 	FormItem,
 	Input,
-	Checkbox,
 	CheckboxGroup,
 	Card,
 	Message,
@@ -36,6 +36,7 @@ Vue.use(DropdownItem)
 Vue.use(Radio)
 Vue.use(RadioGroup)
 Vue.use(RadioButton)
+Vue.use(Checkbox)
 Vue.use(Button);
 Vue.use(Pagination);
 Vue.use(Tabs);
@@ -45,7 +46,6 @@ Vue.use(Dialog);
 Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Input);
-Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 Vue.use(Card);
 Vue.use(Select);
