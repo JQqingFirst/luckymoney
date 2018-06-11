@@ -4,7 +4,9 @@ import Router from 'vue-router'
 const Index = resolve => require(['../components/index/Index.vue'], resolve) //首页
 const Dltnum = resolve => require(['../components/dltnum/Dltnum.vue'], resolve)//大乐透选号
 const Dltnumlist = resolve => require(['../components/dltnum/Dltnumlist.vue'], resolve)//选号列表
-const paypage = resolve => require(['../components/dltnum/paypage.vue'], resolve)//支付
+const paypage = resolve => require(['../components/dltnum/paypage.vue'], resolve)//支付Openbag
+const Openbag = resolve => require(['../components/openbag/Openbag.vue'], resolve)//打开红包
+const Baglist = resolve => require(['../components/baglist/Baglist.vue'], resolve)//红包列表
 
 const Error = resolve => require(['../components/error/Error.vue'], resolve) //错误链接
 
@@ -31,6 +33,16 @@ export default new Router({
       path: '/paypage',
       name: 'paypage',
       component: paypage
+    },
+    {//打开红包页面
+      path: '/Openbag',
+      name: 'Openbag',
+      component: Openbag
+    },
+    {//红包列表
+      path: '/Baglist',
+      name: 'Baglist',
+      component: Baglist
     },
   // ,{
   //   path: '/friend_id/:friend_id',
