@@ -14,11 +14,11 @@
           </li>
           <li>查看彩票详情>></li>
         </ul>
-        <router-link to="/Baglist" class="btn btn-left">
+        <p class="btn btn-left" @click="ifpop()">
           更多红包
-        </router-link>
+        </p>
         <p class="btn btn-right sharebtn">分享</p>
-        <router-link to="/Baglist" class="btn btn-right bagcenter">
+        <router-link to="/Selfredbag" class="btn btn-right bagcenter">
           红包中心
         </router-link>
         <span class="coner coner-left"><img src="./images/coner-left.png"/></span>
@@ -42,6 +42,16 @@
           </ul>
         </div>
 
+      </div>
+      <!-- 弹出层一 -->
+      <div class="popupBox" v-show="ispop" >
+        <div class="closebtn" @click="ifpop()">
+          <img src="./images/close-icon.png" alt="关闭"/>
+        </div>
+        <div class="erbg">
+          <!--<div></div>二维码位置-->
+          <p class="erbg-txt">识别二维码或添加“小乐”微信号(lewin2017)邀请进群 抢更多红包</p>
+        </div>
       </div>
     </div>
 </template>
@@ -84,14 +94,15 @@
                   oneBet: '1'
                 }
               ],
-
-
-
+              ispop: false
             }
         },
         computed: {},
 
         methods: {
+          ifpop(){
+            this.ispop = !this.ispop;
+          },
             filters: {},
             watch: {},
             created() {
@@ -115,7 +126,7 @@
   }
   .giveperson li{text-align: center; color: #FFE99F;}
   .avatar{position: relative; width: 60px; height: 60px;border-radius: 50%;margin: 0 auto 15px;}
-  .avatar img,.toputbtn img,.coner img,.oneavatar img{width: 100%;}
+  .avatar img,.toputbtn img,.coner img,.oneavatar img,.closebtn img{width: 100%;}
   .nick{font-size: 18px;font-weight: 500;}
   .bagmoney{font-size: 14px;margin: 12px 0 18px;}
   .bagmoney strong{font-size: 30px;padding-right: 3px;}
@@ -133,11 +144,14 @@
   .list-bottom{position: relative;border-top-left-radius: 7px;border-top-right-radius: 7px;margin-top: -7px;background-color: #fff;padding: 0 20px;height: 100px;}
   .putnum{height: 40px; line-height: 40px; font-size: 12px; color: #666;}
   .perlist ul{border-bottom: 1px solid #D0D0D0;padding: 12px 0;}
-  .perlist ul li{}
   .oneavatar{width: 42px; height: 42px;margin-right: 12px;}
   .oneavatar img{vertical-align: middle;}
   .onename{font-size: 18px; color: #333; line-height: 30px;}
   .onetime{font-size: 12px; color: #999;}
   .onemoney{font-size: 18px; color: #FD5545; line-height: 30px;}
   .onebet{font-size: 12px; color: #999;text-align: right;}
+  .popupBox{z-index: 500; position: fixed; top: 0;bottom: 0; left: 0; right: 0; background-color: rgba(0,0,0,0.8);}
+  .closebtn{position: absolute; top: 0; right: 0; width: 30px; height: 30px; margin-top: 36px; margin-right: 36px;}
+  .erbg{position: relative; width: 300px; height: 402px; margin: 102px auto 0; background: url("./images/erbg.png") no-repeat; background-size: 100% 100%;}
+  .erbg-txt{position: relative; width: 100%;text-align: center;font-size: 13px; color: #fff;line-height: 25px;padding: 280px 20px 0;}
 </style>

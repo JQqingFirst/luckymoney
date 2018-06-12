@@ -7,6 +7,7 @@ const Dltnumlist = resolve => require(['../components/dltnum/Dltnumlist.vue'], r
 const paypage = resolve => require(['../components/dltnum/paypage.vue'], resolve)//支付Openbag
 const Openbag = resolve => require(['../components/openbag/Openbag.vue'], resolve)//打开红包
 const Baglist = resolve => require(['../components/baglist/Baglist.vue'], resolve)//红包列表
+const Selfredbag = resolve => require(['../components/selfredbag/Selfredbag.vue'], resolve)//红包中心
 
 const Error = resolve => require(['../components/error/Error.vue'], resolve) //错误链接
 
@@ -43,6 +44,11 @@ export default new Router({
       path: '/Baglist',
       name: 'Baglist',
       component: Baglist
+    },
+    {//红包中心
+      path: '/Selfredbag',
+      name: 'Selfredbag',
+      component: Selfredbag
     },
   // ,{
   //   path: '/friend_id/:friend_id',
