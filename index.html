@@ -2,29 +2,6 @@
 <html>
 
 	<head>
-		<span style="display: none;">
-  		<?php
-include "../../lanewechat.php";
-// $aa = $_GET['user_id']?$_GET['user_id']:'oKRYgv_I91FSUOX8kYOhP05AXQ_0';
-if($_GET['user_id']){
-  $redirect_uri = 'LaneWeChat2/kuailededan/dist/index.php#/friend_id/'.$_GET['user_id'];
-}else{
-  $redirect_uri = 'LaneWeChat2/kuailededan/dist/index.php';
-}
-
-\LaneWeChat\Core\WeChatOAuth::getCode($redirect_uri, $b, $scope = 'snsapi_userinfo');
-$code = $_GET['code'];
-
-$a = \LaneWeChat\Core\WeChatOAuth::getAccessTokenAndOpenId($code);
-$user_info = \LaneWeChat\Core\WeChatOAuth::getUserInfo($a['access_token'], $a['openid'], $lang = 'zh_CN');
-echo "<script type=>
-   window.localStorage.setItem('user_id'," . "'" . $user_info['openid'] . "'" . ");
-   window.localStorage.setItem('nickname'," . "'" . $user_info['nickname'] . "'" . ");
-   window.localStorage.setItem('headimgurl'," . "'" . $user_info['headimgurl'] . "'" . ");
-   //alert(window.localStorage.getItem('user_id'));
-   </script>";
-?>
-  	</span>
 		<meta charset="utf-8">
 		<title>助力世界杯</title>
 		<meta name="author" content="jqq">

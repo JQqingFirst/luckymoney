@@ -278,10 +278,9 @@
   .fr{float:right;}
   ul li{list-style: none;}
   .clearfix{overflow: auto;zoom:1;}
-  .nav {width: 100%;height: 60px;background-color: #FFFFFF;font-size: 18px;line-height: 60px;text-align: center; border-bottom: 1px solid #b2b2b2;}
-  .nav .some {width: 15px;position: relative;margin-left: 18px;margin-top: 10px;}
-  .nav .some1 {width: 25px;position: relative;margin-right: 18px;margin-top: 10px;}
-  .nav .some img,.nav .some1 img{width: 100%;}
+  .nav {width: 100%;height: 50px;background-color: #FFFFFF;font-size: 18px;line-height: 50px;text-align: center; border-bottom: 1px solid #b2b2b2;}
+  .nav .some {width: 10px;position: relative;margin-left: 15px;}
+  .nav .some img{width: 100%;}
 	.elshow{display: none;}
 	.wraptop {position: relative;width: 100%;background-color: #fff;margin: 10px auto 0;}
 	.con {width: 94%;margin: 0 3%;line-height: 40px;font-size: 16px;}

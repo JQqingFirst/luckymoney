@@ -32,9 +32,9 @@
             <ul class="ball">
                 <li v-for="n in 12" @click="checkblue(n)" :class=" {n,bluearr} | calculationblue(n)">{{ n | minTen}}</li>
             </ul>
-            <div class="zhuijiaBox">
-                <el-checkbox v-model="checked">追加投注</el-checkbox>
-            </div>
+            <!--<div class="zhuijiaBox">-->
+                <!--<el-checkbox v-model="checked">追加投注</el-checkbox>-->
+            <!--</div>-->
         </div>
         <div class="foot">
             <div class="calculate clearfix">

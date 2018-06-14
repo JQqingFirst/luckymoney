@@ -34,10 +34,10 @@
       <div class="nav clearfix">
         <span class="fl some" @click="clearall()"><img src="./images/clear.png"/></span>
         <span class="red">共{{money}}元</span>&nbsp;<span class="fons">{{betnum}}注</span>
-        <span class="fr isorder" :class="{isclick:isActive}" @click="payorder()">
+        <div class="fr isorder" :class="{isclick:isActive}" @click="payorder()">
           <!--:to="{path:(isActive?'/':'')}"-->
-            付款
-        </span>
+            确定
+        </div>
       </div>
     </div>
   </div>
@@ -108,10 +108,8 @@
           codesList.push(codes)
         }
         var codesJson = {
-          award_stop: '0', //追号中奖停 (暂无追号)
           total: parseInt(total), //总金额
           codes: codesList,
-          issues: 1,  //追期
           betNum: this.betnum  //注数
         }
         console.log(codesJson)
@@ -122,7 +120,7 @@
       getcode(orderinfo) {
         var code = '';
         for (var i = 0; i < orderinfo.redorder.length; i++) {
-          if (orderinfo.redorder[i] < 10 && orderinfo.redorder[i].length < 2) {
+          if (orderinfo.redorder[i] < 10) {
             orderinfo.redorder[i] = '0' + orderinfo.redorder[i];
           }
           code += orderinfo.redorder[i];
@@ -130,7 +128,7 @@
         }
         if (orderinfo.type == 1) {
           for (var i = 0; i < orderinfo.blueorder.length; i++) {
-            if (orderinfo.blueorder[i] < 10 && orderinfo.redorder[i].length < 2) {
+            if (orderinfo.blueorder[i] < 10) {
               orderinfo.blueorder[i] = '0' + orderinfo.blueorder[i];
             }
             code += orderinfo.blueorder[i];
@@ -153,6 +151,7 @@
        payorder() {
         if (this.isActive) {
           test.saveCode(this.createJson(this.items))
+          window.location.href = '/'
 //          this.createJson(this.items) = null
 //          this.codeObj = this.createJson(this.items)
 //            let code = this.createJson(this.items)

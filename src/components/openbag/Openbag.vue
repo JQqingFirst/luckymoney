@@ -12,7 +12,7 @@
       <div class="open" :class="{rotate:clickopen,opennone: ishavemoney}" @click="open()">
         <img src="./images/open.png" alt="開"/>
       </div>
-      <router-link class="todetail" to="/Openbag">
+      <router-link class="todetail" to="/Baglist">
         查看领取详情>>
       </router-link>
     </div>

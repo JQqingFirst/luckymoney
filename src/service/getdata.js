@@ -25,7 +25,8 @@ let timestamp=new Date().getTime();
 export const confirmCode = (json) => new axios.post("/webapi/pay/index", qs.stringify(json));
 //大乐透投注
 export const dltpayCode = (json) => new axios.post("/webapi/dlt/buy", qs.stringify(json));
-// //我的鸡笼
+// 投注
+export const packagee = (json) => new axios.post("/webapi/dlt/package", qs.stringify(json));
 // export const info = (json) =>new axios.get("/Api2/ZjisheDankuang/info",{'params':json});
 // //我的好友列表
 // export const userFriendList = (json) =>new axios.get("/Api2/ZjisheFriends/userFriendList", {'params':json});

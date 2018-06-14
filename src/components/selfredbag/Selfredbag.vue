@@ -14,7 +14,7 @@
       <!--可提现金额-->
       <ul class="selfmoney clearfix">
         <li class="fl">红包奖金: <strong>{{bonusMoney}}</strong>元</li>
-        <li class="withdraw fr">提现</li>
+        <li class="withdraw fr" @click="ifpop()">提现</li>
       </ul>
       <!--发出/领取红包记录-->
       <div class="selflist">
@@ -51,7 +51,10 @@
           </el-tab-pane>
         </el-tabs>
       </div>
-      <div class="popupBox">
+      <router-link class="toputbtn" to="/">
+        <img src="./images/toputbtn.png"/>
+      </router-link>
+      <div class="popupBox" v-show="ispop">
         <div class="certifietop">
           <!--<img src="./images/certifie.png" alt="什么破网!?你能不能刷新下!!"/>-->
           <ul>
@@ -77,7 +80,7 @@
 
           </div>
           <ul class="clearfix btn">
-            <li class="fl">取消</li>
+            <li class="fl" @click="ifpop()">取消</li>
             <li class="fl">确定</li>
           </ul>
         </div>
@@ -92,6 +95,7 @@
         name: 'Selfredbag',
         data() {
             return {
+              ispop:false,
               selfName: '我自己',
               selfPhone: '未绑定',
               bonusMoney: '123.00',
@@ -130,6 +134,9 @@
           handleClick(tab, event) {
             console.log(tab, event);
           },
+          ifpop(){
+            this.ispop = !this.ispop;
+          },
           filters: {},
           watch: {},
           created() {},
@@ -151,7 +158,7 @@
   .tips{position: relative;height: 24px; line-height: 24px; font-size: 12px; color: #fff; background-color: #F4483C;padding-left: 18px;}
   .selfinfo{padding: 18px; background-color: #fff;border-bottom: 1px solid #F2F7F9;}
   .selfavatar{width: 60px; height: 60px; border-radius: 50%; margin-right: 6px;}
-  .selfavatar img,.peravatar img,.certifietop img{width: 100%;}
+  .selfavatar img,.peravatar img,.certifietop img,.toputbtn img{width: 100%;}
   .selfname{font-size: 16px; color: #333;line-height: 35px;}
   .selfphone{font-size: 14px; color: #666;}
   .selfmoney{height: 50px; padding: 7px 18px; background-color: #fff;}
@@ -167,6 +174,7 @@
   .permoney{font-size: 12px; color: #666;text-align: right; line-height: 30px;}
   .perbouns{font-size: 15px; color: #999;}
   .colred{color: #FD5545;}
+  .toputbtn{position: fixed;width: 198px;bottom: 0;left: 0; right: 0; margin: 0 auto 30px; cursor: pointer;}
   .popupBox{z-index: 500; position: fixed; top: 0;bottom: 0; left: 0; right: 0; background-color: rgba(0,0,0,0.8);}
   .certifietop{position: relative;width: 342px; height: 204px; margin: 78px auto 0; background: url("./images/certifie.png") no-repeat;background-size: 100% 100%;}
   .certifietop ul{position: relative; width: 100%;padding: 35px 30px 0 46px;}
@@ -175,7 +183,7 @@
   .certified{width: 94%; margin: 0 auto; padding: 12px 18px 20px;}
   .txtbox{width: 100%; height: 44px; border: 1px solid #979797; border-radius: 4px; margin-bottom: 18px;padding: 3px 12px;}
   .verbox{width: 55%;height: 44px; border: 1px solid #979797; border-radius: 4px; margin-bottom: 18px; margin-right:7px; padding: 3px 12px;}
-  .txtinput{width: 55%; height: 35px; font-size: 14px;}
+  .txtinput{width: 100%; height: 35px; font-size: 14px;outline: none;}
   .verbox1{width: 42%;height: 44px;background-color: #FDD591; text-align: center;line-height: 44px; border-radius: 4px;}
   .verbox1 input{color: #fff;}
   .btn{width: 90%; margin: 0 auto;}
